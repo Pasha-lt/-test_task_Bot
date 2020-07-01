@@ -31,7 +31,12 @@ async def process_url(message: types.Message, state: FSMContext):
             url = 'http://' + url
             print(url)
         await page.goto(url)
-        await page.setViewport(viewport=dict(width=1920, height=1085))
+        
+        #await page.setViewport(viewport=dict(width=1920, height=1085))
+        # Если закоментируем эту часть кода тогда будут сохраняться 'длинные сайты' но из-за        
+        # большого размера изображения принтскрин будет плохого качества. 
+        # способ обхода, отельно сохраняем и отправляем пользователю.
+        
         with NamedTemporaryFile() as fp:
             await page.screenshot(path=fp.name, type='jpeg', quality=200, fullPage=True)
             await message.reply_photo(fp.file)
